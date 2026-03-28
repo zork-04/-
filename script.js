@@ -1,16 +1,25 @@
 const STORAGE_KEY = "song-night-tour-beta";
 
+const chrysanthemumOptions = Array.from({ length: 7 }, (_, index) => ({
+  id: index + 1,
+  image: `./tex/${index + 1}.png`,
+  name: `花信${toChineseNumber(index + 1)}`,
+  code: `菊印编号 ${String(index + 1).padStart(2, "0")}`,
+}));
+
 const defaultState = {
   auth: {
     isLoggedIn: false,
+    pendingIdentitySelection: false,
     phone: "",
     codeRequested: false,
     verificationCode: "",
   },
-  profileToken: {
-    code: "",
-    rank: "宣和夜游使",
-    name: "游人 · 汴京访客",
+  chrysanthemumIdentity: {
+    selectedChrysanthemumId: null,
+    selectedChrysanthemumImage: "",
+    selectedChrysanthemumName: "",
+    identityMark: "夜游花印",
   },
   pointsLedger: {
     balance: 2860,
@@ -78,11 +87,15 @@ const sendCodeBtn = document.getElementById("send-code-btn");
 const loginBtn = document.getElementById("login-btn");
 const logoutBtn = document.getElementById("logout-btn");
 
-const tokenCode = document.getElementById("token-code");
-const tokenRank = document.getElementById("token-rank");
-const tokenName = document.getElementById("token-name");
+const identityImage = document.getElementById("identity-image");
+const identityRank = document.getElementById("identity-rank");
+const identityName = document.getElementById("identity-name");
+const identityCode = document.getElementById("identity-code");
 const pointsValue = document.getElementById("points-value");
 const pointsList = document.getElementById("points-list");
+const identityModal = document.getElementById("identity-modal");
+const identityGrid = document.getElementById("identity-grid");
+const identityConfirmBtn = document.getElementById("identity-confirm-btn");
 
 const navButtons = Array.from(document.querySelectorAll(".nav-btn"));
 const featurePanels = {
@@ -132,6 +145,7 @@ function bindEvents() {
   sendCodeBtn.addEventListener("click", handleSendCode);
   loginBtn.addEventListener("click", handleLogin);
   logoutBtn.addEventListener("click", handleLogout);
+  identityConfirmBtn.addEventListener("click", confirmIdentitySelection);
   guidePlayBtn.addEventListener("click", toggleGuidePlayback);
   openCameraBtn.addEventListener("click", openFullscreenCamera);
   closeCameraBtn.addEventListener("click", closeFullscreenCamera);
@@ -168,13 +182,7 @@ function loadState() {
 }
 
 function initializeState() {
-  return {
-    ...cloneDefaultState(),
-    profileToken: {
-      ...defaultState.profileToken,
-      code: createTokenCode(),
-    },
-  };
+  return cloneDefaultState();
 }
 
 function cloneDefaultState() {
@@ -186,7 +194,10 @@ function mergeState(base, incoming) {
     ...base,
     ...incoming,
     auth: { ...base.auth, ...(incoming.auth || {}) },
-    profileToken: { ...base.profileToken, ...(incoming.profileToken || {}) },
+    chrysanthemumIdentity: {
+      ...base.chrysanthemumIdentity,
+      ...(incoming.chrysanthemumIdentity || {}),
+    },
     pointsLedger: { ...base.pointsLedger, ...(incoming.pointsLedger || {}) },
     guide: {
       ...base.guide,
@@ -209,27 +220,65 @@ function saveState() {
 function render() {
   renderAuth();
   renderProfile();
+  renderIdentityModal();
   renderGuide(appState.guide);
   renderMap(appState.mapExperience);
   renderCamera(appState.cameraExperience);
 }
 
 function renderAuth() {
+  const showHome = appState.auth.isLoggedIn && !appState.auth.pendingIdentitySelection;
   loginScreen.classList.toggle("hidden", appState.auth.isLoggedIn);
-  homeScreen.classList.toggle("hidden", !appState.auth.isLoggedIn);
+  homeScreen.classList.toggle("hidden", !showHome);
   phoneInput.value = appState.auth.phone;
   codeInput.value = "";
 }
 
 function renderProfile() {
-  tokenCode.textContent = appState.profileToken.code;
-  tokenRank.textContent = appState.profileToken.rank;
-  tokenName.textContent = appState.profileToken.name;
+  const identity = appState.chrysanthemumIdentity;
+  identityImage.src = identity.selectedChrysanthemumImage || chrysanthemumOptions[0].image;
+  identityImage.alt = identity.selectedChrysanthemumName || "用户选择的小菊花身份";
+  identityRank.textContent = identity.identityMark;
+  identityName.textContent = identity.selectedChrysanthemumName
+    ? `${identity.selectedChrysanthemumName} · 汴京访客`
+    : "待选花信 · 汴京访客";
+  identityCode.textContent = identity.selectedChrysanthemumId
+    ? `菊印编号 ${String(identity.selectedChrysanthemumId).padStart(2, "0")}`
+    : "菊印编号 待定";
+
   pointsValue.textContent = appState.pointsLedger.balance;
   pointsList.innerHTML = appState.pointsLedger.entries
     .slice(0, 4)
     .map((entry) => `<li><span>${entry.label}</span><strong>${entry.amount}</strong></li>`)
     .join("");
+}
+
+function renderIdentityModal() {
+  const isVisible = appState.auth.pendingIdentitySelection;
+  identityModal.classList.toggle("hidden", !isVisible);
+
+  if (!isVisible) {
+    return;
+  }
+
+  identityGrid.innerHTML = chrysanthemumOptions
+    .map((item) => {
+      const isActive = item.id === appState.chrysanthemumIdentity.selectedChrysanthemumId;
+      return `
+        <button class="identity-option ${isActive ? "active" : ""}" data-identity-id="${item.id}" type="button">
+          <img class="identity-option-image" src="${item.image}" alt="${item.name}" />
+          <span class="identity-option-name">${item.name}</span>
+          <span class="identity-option-code">${item.code}</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  Array.from(identityGrid.querySelectorAll(".identity-option")).forEach((button) => {
+    button.addEventListener("click", () => selectIdentity(Number(button.dataset.identityId)));
+  });
+
+  identityConfirmBtn.disabled = appState.chrysanthemumIdentity.selectedChrysanthemumId === null;
 }
 
 function renderGuide(guide) {
@@ -340,10 +389,14 @@ function handleLogin() {
   }
 
   appState.auth.isLoggedIn = true;
+  appState.auth.pendingIdentitySelection = true;
   appState.auth.phone = phone;
+  appState.chrysanthemumIdentity.selectedChrysanthemumId = null;
+  appState.chrysanthemumIdentity.selectedChrysanthemumImage = "";
+  appState.chrysanthemumIdentity.selectedChrysanthemumName = "";
   saveState();
   render();
-  showToast("身份令已生效，欢迎入园");
+  showToast("请选择你的小菊身份");
 }
 
 function handleLogout() {
@@ -353,6 +406,31 @@ function handleLogout() {
   saveState();
   render();
   showToast("已退出夜游身份");
+}
+
+function selectIdentity(id) {
+  const option = chrysanthemumOptions.find((item) => item.id === id);
+  if (!option) {
+    return;
+  }
+
+  appState.chrysanthemumIdentity.selectedChrysanthemumId = option.id;
+  appState.chrysanthemumIdentity.selectedChrysanthemumImage = option.image;
+  appState.chrysanthemumIdentity.selectedChrysanthemumName = option.name;
+  saveState();
+  renderIdentityModal();
+}
+
+function confirmIdentitySelection() {
+  if (appState.chrysanthemumIdentity.selectedChrysanthemumId === null) {
+    showToast("请先选择一盆小菊花");
+    return;
+  }
+
+  appState.auth.pendingIdentitySelection = false;
+  saveState();
+  render();
+  showToast("小菊身份已确认，欢迎入园");
 }
 
 function switchPanel(panel) {
@@ -527,8 +605,7 @@ function showToast(message) {
   }, 2200);
 }
 
-function createTokenCode() {
-  const segment = Math.random().toString(36).slice(2, 6).toUpperCase();
-  const suffix = String(Math.floor(1000 + Math.random() * 9000));
-  return `RUIHE-${segment}-${suffix}`;
+function toChineseNumber(value) {
+  const map = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+  return map[value] || String(value);
 }

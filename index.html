@@ -21,7 +21,7 @@
             <p class="eyebrow">Beta · 瑞鹤夜巡</p>
             <h1>宋韵夜游</h1>
             <p class="hero-copy">
-              以《瑞鹤图》为引，于菊花节夜色中领取你的专属入园身份令。
+              以《瑞鹤图》为引，于菊花节夜色中领取你的专属小菊身份。
             </p>
           </div>
 
@@ -44,7 +44,7 @@
               <button id="send-code-btn" class="ghost-btn" type="button">获取验证码</button>
             </div>
 
-            <button id="login-btn" class="primary-btn" type="button">领取夜游身份令</button>
+            <button id="login-btn" class="primary-btn" type="button">领取夜游小菊身份</button>
             <p class="helper-text">beta 版为演示登录，不接真实后端数据。</p>
           </div>
         </section>
@@ -58,22 +58,22 @@
             <button id="logout-btn" class="text-btn" type="button">退出</button>
           </header>
 
-          <section class="token-card framed-card">
+          <section class="identity-card framed-card">
             <div class="card-header">
-              <span class="card-mark">夜巡令牌</span>
-              <span class="card-submark" id="token-rank">宣和夜游使</span>
+              <span class="card-mark">今夜花信</span>
+              <span class="card-submark" id="identity-rank">夜游花印</span>
             </div>
-            <div class="token-body">
-              <div class="token-crest">
-                <div class="crest-circle">
-                  <span>令纹留白待补</span>
+            <div class="identity-body">
+              <div class="identity-crest">
+                <div class="flower-frame">
+                  <img id="identity-image" class="identity-image" src="./tex/1.png" alt="用户选择的小菊花身份" />
                 </div>
               </div>
-              <div class="token-meta">
-                <p class="token-code-label">身份编码</p>
-                <p class="token-code" id="token-code">RUIHE-0000</p>
-                <p class="token-name" id="token-name">游人 · 汴京访客</p>
-                <p class="token-desc">凭此令可参与夜游打卡、语音导览、积分累计与节庆互动。</p>
+              <div class="identity-meta">
+                <p class="identity-code-label">今夜同行花信</p>
+                <p class="identity-name" id="identity-name">花信一 · 汴京访客</p>
+                <p class="identity-code" id="identity-code">菊印编号 01</p>
+                <p class="identity-desc">你的小菊花将作为今夜夜游身份标识，陪你参与打卡、导览与节庆互动。</p>
               </div>
             </div>
           </section>
@@ -230,6 +230,16 @@
       </section>
 
       <div id="toast" class="toast hidden"></div>
+
+      <div id="identity-modal" class="identity-modal hidden">
+        <div class="identity-modal-card framed-card">
+          <p class="eyebrow">身份选择</p>
+          <h3>请选择今晚与你同行的一盆小菊花</h3>
+          <p class="identity-modal-copy">验证码已验证成功，选定后即可进入夜游首页。</p>
+          <div id="identity-grid" class="identity-grid"></div>
+          <button id="identity-confirm-btn" class="primary-btn" type="button" disabled>确认小菊身份</button>
+        </div>
+      </div>
 
       <div id="reward-modal" class="reward-modal hidden">
         <div class="reward-card framed-card">
