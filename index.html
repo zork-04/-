@@ -14,6 +14,7 @@
       <div class="ambient ambient-left"></div>
       <div class="ambient ambient-right"></div>
       <div class="paper-grain"></div>
+      <div id="global-lantern-layer" class="global-feedback-layer" aria-hidden="true"></div>
 
       <main class="app">
         <section id="login-screen" class="screen screen-login">
@@ -33,18 +34,34 @@
 
             <label class="field">
               <span>手机号</span>
-              <input id="phone-input" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入手机号" />
+              <input
+                id="phone-input"
+                type="tel"
+                inputmode="numeric"
+                maxlength="11"
+                placeholder="请输入手机号"
+              />
             </label>
 
             <div class="field code-field">
               <label>
                 <span>验证码</span>
-                <input id="code-input" type="text" inputmode="numeric" maxlength="6" placeholder="请输入验证码" />
+                <input
+                  id="code-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="6"
+                  placeholder="请输入验证码"
+                />
               </label>
-              <button id="send-code-btn" class="ghost-btn" type="button">获取验证码</button>
+              <button id="send-code-btn" class="ghost-btn" type="button">
+                获取验证码
+              </button>
             </div>
 
-            <button id="login-btn" class="primary-btn" type="button">领取夜游小菊身份</button>
+            <button id="login-btn" class="primary-btn" type="button">
+              领取夜游小菊身份
+            </button>
             <p class="helper-text">beta 版为演示登录，不接真实后端数据。</p>
           </div>
         </section>
@@ -53,122 +70,264 @@
           <header class="top-bar">
             <div>
               <p class="eyebrow">瑞鹤图 · 菊花夜宴</p>
-              <h2>夜游首页</h2>
+              <h2 id="main-view-title">夜游首页</h2>
             </div>
             <button id="logout-btn" class="text-btn" type="button">退出</button>
           </header>
 
-          <section class="identity-card framed-card">
-            <div class="card-header">
-              <span class="card-mark">今夜花信</span>
-              <span class="card-submark" id="identity-rank">夜游花印</span>
-            </div>
-            <div class="identity-body">
-              <div class="identity-crest">
-                <div class="flower-frame">
-                  <img id="identity-image" class="identity-image" src="./tex/1.png" alt="用户选择的小菊花身份" />
-                </div>
+          <div id="home-summary" class="main-view main-view-home">
+            <section class="identity-card framed-card">
+              <div class="card-header">
+                <span class="card-mark">今夜花信</span>
+                <span class="card-submark" id="identity-rank">夜游花印</span>
               </div>
-              <div class="identity-meta">
-                <p class="identity-code-label">今夜同行花信</p>
-                <p class="identity-name" id="identity-name">花信一 · 汴京访客</p>
-                <p class="identity-code" id="identity-code">菊印编号 01</p>
-                <p class="identity-desc">你的小菊花将作为今夜夜游身份标识，陪你参与打卡、导览与节庆互动。</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="points-card framed-card">
-            <div class="card-header">
-              <span class="card-mark">银票账本</span>
-              <span class="card-submark">Points Ledger</span>
-            </div>
-            <div class="points-row">
-              <div>
-                <p class="points-label">当前银票积分</p>
-                <p class="points-value"><span id="points-value">2860</span> 两</p>
-              </div>
-              <div class="points-badge">可兑菊灯券</div>
-            </div>
-            <ul id="points-list" class="points-list"></ul>
-          </section>
-
-          <section id="panel-guide" class="feature-panel framed-card">
-            <div class="card-header">
-              <span class="card-mark">数字语音导览</span>
-              <span class="card-submark">Audio Guide</span>
-            </div>
-            <div class="guide-layout">
-              <div class="guide-player">
-                <p class="guide-scene">当前章节</p>
-                <h3 id="guide-title">《鹤影临菊台》</h3>
-                <p id="guide-copy" class="guide-copy">宫灯初上，菊影映水，鹤群自云间徐徐回旋。</p>
-                <div class="progress-track">
-                  <div id="guide-progress" class="progress-bar"></div>
-                </div>
-                <div class="guide-actions">
-                  <button id="guide-play-btn" class="primary-btn small" type="button">开始聆听</button>
-                  <span id="guide-status" class="status-text">未播放</span>
-                </div>
-              </div>
-              <div id="guide-list" class="guide-list"></div>
-            </div>
-          </section>
-
-          <section id="panel-map" class="feature-panel framed-card hidden">
-            <div class="card-header">
-              <span class="card-mark">夜游地图</span>
-              <span class="card-submark">Night Route</span>
-            </div>
-            <div class="map-stage">
-              <div class="map-texture"></div>
-              <div class="route-line route-a"></div>
-              <div class="route-line route-b"></div>
-              <button class="map-point active" data-point="0" style="top: 70%; left: 18%;">入园门楼</button>
-              <button class="map-point" data-point="1" style="top: 50%; left: 48%;">菊影长街</button>
-              <button class="map-point" data-point="2" style="top: 25%; left: 76%;">瑞鹤观演台</button>
-              <div class="user-dot" style="top: 68%; left: 24%;"></div>
-            </div>
-            <div class="map-info">
-              <h3 id="map-title">入园门楼</h3>
-              <p id="map-copy">当前推荐从门楼入场，沿菊影灯阵前往主秀区。</p>
-              <p class="map-tip">热点活动：19:30 瑞鹤投影巡游</p>
-            </div>
-          </section>
-
-          <section id="panel-camera" class="feature-panel framed-card hidden">
-            <div class="card-header">
-              <span class="card-mark">相机打卡</span>
-              <span class="card-submark">Camera / AR</span>
-            </div>
-            <div class="camera-preview">
-              <div class="camera-stage camera-stage-compact">
-                <video id="camera-video" class="camera-video hidden" autoplay playsinline muted></video>
-                <div id="camera-fallback" class="camera-fallback">
-                  <div class="scan-frame"></div>
-                  <p>可进入全屏相机进行打卡识别或 AR 体验。</p>
-                </div>
-                <div id="ar-overlay" class="ar-overlay hidden">
-                  <div class="ar-layer ar-layer-crane" data-ar-scene="crane">
-                    <span class="ar-crane crane-one"></span>
-                    <span class="ar-crane crane-two"></span>
-                  </div>
-                  <div class="ar-layer ar-layer-chrysanthemum hidden" data-ar-scene="chrysanthemum">
-                    <span class="ar-chrysanthemum chrysanthemum-main"></span>
-                    <span class="ar-petal petal-one"></span>
-                    <span class="ar-petal petal-two"></span>
+              <div class="identity-body">
+                <div class="identity-crest">
+                  <div class="flower-frame">
+                    <img
+                      id="identity-image"
+                      class="identity-image"
+                      src="./tex/1.png"
+                      alt="用户选择的小菊花身份"
+                    />
                   </div>
                 </div>
+                <div class="identity-meta">
+                  <p class="identity-code-label">今夜同行花信</p>
+                  <p class="identity-name" id="identity-name">花信一 · 汴京访客</p>
+                  <p class="identity-code" id="identity-code">菊印编号 01</p>
+                  <p class="identity-desc">
+                    你的小菊花将作为今夜夜游身份标识，陪你参与打卡、导览与节庆互动。
+                  </p>
+                </div>
               </div>
-              <div class="camera-actions stacked">
-                <button id="open-camera-btn" class="primary-btn" type="button">进入全屏相机</button>
-                <p id="camera-tip" class="helper-text">全屏模式下可在底部切换“瑞鹤巡游”和“菊影流光”两种 AR 内容。</p>
+            </section>
+
+            <section class="points-card framed-card" data-ledger-card="home">
+              <div class="card-header">
+                <span class="card-mark">银票账本</span>
+                <span class="card-submark">Points Ledger</span>
               </div>
+              <div class="points-row">
+                <div>
+                  <p class="points-label">当前银票积分</p>
+                  <p class="points-value"><span data-points-value>2860</span> 两</p>
+                </div>
+                <div class="points-badge">可兑菊灯券</div>
+              </div>
+              <p class="points-copy" data-ledger-copy>参与夜游互动后，银票会实时记入今夜账本。</p>
+              <ul data-points-list class="points-list"></ul>
+            </section>
+
+            <section class="ar-summary-card framed-card">
+              <div class="card-header">
+                <span class="card-mark">夜游 AR 一期</span>
+                <span class="card-submark" id="ar-home-badge">3 个点位待探访</span>
+              </div>
+              <div class="summary-grid">
+                <div class="summary-box">
+                  <span class="summary-label">识别方式</span>
+                  <strong>固定图像锚点</strong>
+                </div>
+                <div class="summary-box">
+                  <span class="summary-label">主要演绎</span>
+                  <strong>瑞鹤巡游 / 菊影流光</strong>
+                </div>
+              </div>
+              <p id="ar-home-copy" class="helper-text">
+                前往相机页，依次完成 3 个夜游 AR 点位打卡，解锁剧情与积分。
+              </p>
+            </section>
+
+            <section class="home-shortcuts">
+              <button class="shortcut-card framed-card" data-shortcut-view="guide" type="button">
+                <span class="shortcut-kicker">语音导览</span>
+                <strong>继续聆听夜游章节</strong>
+                <span>查看当前章节与导览站点</span>
+              </button>
+              <button class="shortcut-card framed-card" data-shortcut-view="map" type="button">
+                <span class="shortcut-kicker">游玩地图</span>
+                <strong>查看夜游路线</strong>
+                <span>快速进入底图与点位说明</span>
+              </button>
+              <button class="shortcut-card framed-card" data-shortcut-view="camera" type="button">
+                <span class="shortcut-kicker">相机 AR</span>
+                <strong>继续 3 个锚点任务</strong>
+                <span>进入识别、演绎和打卡流程</span>
+              </button>
+            </section>
+          </div>
+
+          <div id="detail-views" class="detail-views hidden">
+            <div class="detail-view-shell hidden" data-view-shell="guide">
+            <section id="panel-guide" class="feature-panel framed-card hidden">
+              <div class="card-header">
+                <span class="card-mark">数字语音导览</span>
+                <span class="card-submark">Audio Guide</span>
+              </div>
+              <div class="guide-layout">
+                <div class="guide-player">
+                  <p class="guide-scene">当前章节</p>
+                  <h3 id="guide-title">《鹤影临菊台》</h3>
+                  <p id="guide-copy" class="guide-copy">
+                    宫灯初上，菊影映水，鹤群自云间徐徐回旋。
+                  </p>
+                  <div class="progress-track">
+                    <div id="guide-progress" class="progress-bar"></div>
+                  </div>
+                  <div class="guide-actions">
+                    <button id="guide-play-btn" class="primary-btn small" type="button">
+                      开始聆听
+                    </button>
+                    <span id="guide-status" class="status-text">未播放</span>
+                  </div>
+                </div>
+                <div id="guide-list" class="guide-list"></div>
+              </div>
+              <section class="points-card points-card-inline framed-card" data-ledger-card="guide">
+                <div class="card-header">
+                  <span class="card-mark">银票账本</span>
+                  <span class="card-submark">Points Ledger</span>
+                </div>
+                <div class="points-row">
+                  <div>
+                    <p class="points-label">当前银票积分</p>
+                    <p class="points-value"><span data-points-value>2860</span> 两</p>
+                  </div>
+                  <div class="points-badge">导览可累积</div>
+                </div>
+                <p class="points-copy" data-ledger-copy>导览、打卡与消费所得，都会同步留存在账本中。</p>
+                <ul data-points-list class="points-list"></ul>
+              </section>
+            </section>
             </div>
-          </section>
+
+            <div class="detail-view-shell hidden" data-view-shell="map">
+            <section id="panel-map" class="feature-panel framed-card hidden">
+              <div class="card-header">
+                <span class="card-mark">夜游地图</span>
+                <span class="card-submark">Night Route</span>
+              </div>
+              <div class="map-stage">
+                <div class="map-texture"></div>
+                <div class="route-line route-a"></div>
+                <div class="route-line route-b"></div>
+                <button class="map-point active" data-point="0" style="top: 70%; left: 18%;">
+                  入园门楼
+                </button>
+                <button class="map-point" data-point="1" style="top: 50%; left: 48%;">
+                  菊影长街
+                </button>
+                <button class="map-point" data-point="2" style="top: 25%; left: 76%;">
+                  瑞鹤观演台
+                </button>
+                <div class="user-dot" style="top: 68%; left: 24%;"></div>
+              </div>
+              <div class="map-info">
+                <h3 id="map-title">入园门楼</h3>
+                <p id="map-copy">当前推荐从门楼入场，沿菊影灯阵前往主秀区。</p>
+                <p class="map-tip">热点活动：19:30 瑞鹤投影巡游</p>
+              </div>
+              <section class="points-card points-card-inline framed-card" data-ledger-card="map">
+                <div class="card-header">
+                  <span class="card-mark">银票账本</span>
+                  <span class="card-submark">Points Ledger</span>
+                </div>
+                <div class="points-row">
+                  <div>
+                    <p class="points-label">当前银票积分</p>
+                    <p class="points-value"><span data-points-value>2860</span> 两</p>
+                  </div>
+                  <div class="points-badge">路线可回看</div>
+                </div>
+                <p class="points-copy" data-ledger-copy>切换点位与完成任务后，账本会持续更新今夜进度。</p>
+                <ul data-points-list class="points-list"></ul>
+              </section>
+            </section>
+            </div>
+
+            <div class="detail-view-shell hidden" data-view-shell="camera">
+            <section id="panel-camera" class="feature-panel framed-card hidden">
+              <div class="card-header">
+                <span class="card-mark">相机打卡</span>
+                <span class="card-submark">Camera / H5 AR</span>
+              </div>
+              <div class="camera-preview">
+                <div class="camera-stage camera-stage-compact">
+                  <video
+                    id="camera-video"
+                    class="camera-video hidden"
+                    autoplay
+                    playsinline
+                    muted
+                  ></video>
+                  <div id="camera-fallback" class="camera-fallback">
+                    <div class="scan-frame"></div>
+                    <p id="camera-preview-copy">
+                      可进入全屏相机进行锚点识别、AR 演绎与夜游打卡。
+                    </p>
+                  </div>
+                  <div id="ar-overlay" class="ar-overlay hidden">
+                    <div class="ar-layer ar-layer-crane" data-ar-scene="crane">
+                      <span class="ar-crane crane-one"></span>
+                      <span class="ar-crane crane-two"></span>
+                    </div>
+                    <div
+                      class="ar-layer ar-layer-chrysanthemum hidden"
+                      data-ar-scene="chrysanthemum"
+                    >
+                      <span class="ar-chrysanthemum chrysanthemum-main"></span>
+                      <span class="ar-petal petal-one"></span>
+                      <span class="ar-petal petal-two"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ar-quick-status">
+                  <div class="summary-box">
+                    <span class="summary-label">运行环境</span>
+                    <strong id="quick-env-text">待检测</strong>
+                  </div>
+                  <div class="summary-box">
+                    <span class="summary-label">识别状态</span>
+                    <strong id="quick-recognition-text">未开始</strong>
+                  </div>
+                </div>
+
+                <div class="camera-actions stacked">
+                  <button id="open-camera-btn" class="primary-btn" type="button">
+                    进入全屏相机
+                  </button>
+                  <p id="camera-tip" class="helper-text">
+                    进入全屏后选择 3 个固定锚点，完成识别后播放瑞鹤与菊影特效。
+                  </p>
+                </div>
+              </div>
+              <section class="points-card points-card-inline framed-card" data-ledger-card="camera">
+                <div class="card-header">
+                  <span class="card-mark">银票账本</span>
+                  <span class="card-submark">Points Ledger</span>
+                </div>
+                <div class="points-row">
+                  <div>
+                    <p class="points-label">当前银票积分</p>
+                    <p class="points-value"><span data-points-value>2860</span> 两</p>
+                  </div>
+                  <div class="points-badge">打卡实时到账</div>
+                </div>
+                <p class="points-copy" data-ledger-copy>识别锚点并完成演绎后，积分会立即记入银票账本。</p>
+                <ul data-points-list class="points-list"></ul>
+              </section>
+            </section>
+            </div>
+          </div>
 
           <nav class="bottom-nav framed-nav">
-            <button class="nav-btn active" data-panel="guide" type="button">
+            <button class="nav-btn active" data-panel="home" type="button">
+              <span class="nav-icon">首</span>
+              <span>首页</span>
+            </button>
+            <button class="nav-btn" data-panel="guide" type="button">
               <span class="nav-icon">声</span>
               <span>语音导览</span>
             </button>
@@ -188,23 +347,35 @@
         <div class="fullscreen-camera-head">
           <div>
             <p class="eyebrow">夜巡取景</p>
-            <h3 id="camera-mode-title">打卡识别</h3>
+            <h3 id="camera-mode-title">H5 AR 识别</h3>
           </div>
           <button id="close-camera-btn" class="ghost-btn" type="button">退出全屏</button>
         </div>
 
         <div class="camera-stage camera-stage-full">
-          <video id="camera-video-full" class="camera-video hidden" autoplay playsinline muted></video>
+          <video
+            id="camera-video-full"
+            class="camera-video hidden"
+            autoplay
+            playsinline
+            muted
+          ></video>
           <div id="camera-fallback-full" class="camera-fallback">
             <div class="scan-frame fullscreen-frame"></div>
-            <p id="camera-full-copy">请将打卡点置于取景框中央，准备开始识别。</p>
+            <p id="camera-full-copy">请将指定打卡图置于取景框中央，准备开始识别。</p>
+          </div>
+          <div id="recognition-lock" class="recognition-lock hidden">
+            <span>已锁定锚点</span>
           </div>
           <div id="ar-overlay-full" class="ar-overlay hidden">
             <div class="ar-layer ar-layer-crane" data-ar-scene="crane">
               <span class="ar-crane crane-one"></span>
               <span class="ar-crane crane-two"></span>
             </div>
-            <div class="ar-layer ar-layer-chrysanthemum hidden" data-ar-scene="chrysanthemum">
+            <div
+              class="ar-layer ar-layer-chrysanthemum hidden"
+              data-ar-scene="chrysanthemum"
+            >
               <span class="ar-chrysanthemum chrysanthemum-main"></span>
               <span class="ar-petal petal-one"></span>
               <span class="ar-petal petal-two"></span>
@@ -213,10 +384,31 @@
         </div>
 
         <div class="fullscreen-bottom-panel">
-          <div class="camera-mode-switch fullscreen-switch">
-            <button class="mode-btn active" data-mode="checkin" type="button">打卡识别</button>
-            <button class="mode-btn" data-mode="ar" type="button">AR 演绎</button>
+          <div class="ar-status-card framed-card">
+            <div class="ar-status-grid">
+              <div>
+                <span class="summary-label">环境状态</span>
+                <strong id="ar-env-text">检测中</strong>
+              </div>
+              <div>
+                <span class="summary-label">识别状态</span>
+                <strong id="ar-recognition-text">未开始</strong>
+              </div>
+              <div>
+                <span class="summary-label">当前点位</span>
+                <strong id="ar-anchor-text">未选择</strong>
+              </div>
+              <div>
+                <span class="summary-label">剧情进度</span>
+                <strong id="ar-story-text">待触发</strong>
+              </div>
+            </div>
+            <p id="ar-guidance-text" class="helper-text">
+              请先选择一个固定锚点，再开始识别。
+            </p>
           </div>
+
+          <div id="anchor-grid" class="anchor-grid"></div>
 
           <div id="ar-scene-switch" class="ar-scene-switch hidden">
             <button class="scene-btn active" data-scene="crane" type="button">瑞鹤巡游</button>
@@ -224,7 +416,8 @@
           </div>
 
           <div class="camera-actions fullscreen-actions">
-            <button id="checkin-btn" class="primary-btn" type="button">识别打卡点</button>
+            <button id="recognize-btn" class="ghost-btn" type="button">开始识别锚点</button>
+            <button id="checkin-btn" class="primary-btn" type="button">播放演绎并完成打卡</button>
           </div>
         </div>
       </section>
@@ -237,16 +430,20 @@
           <h3>请选择今晚与你同行的一盆小菊花</h3>
           <p class="identity-modal-copy">验证码已验证成功，选定后即可进入夜游首页。</p>
           <div id="identity-grid" class="identity-grid"></div>
-          <button id="identity-confirm-btn" class="primary-btn" type="button" disabled>确认小菊身份</button>
+          <button id="identity-confirm-btn" class="primary-btn" type="button" disabled>
+            确认小菊身份
+          </button>
         </div>
       </div>
 
       <div id="reward-modal" class="reward-modal hidden">
         <div class="reward-card framed-card">
-          <p class="eyebrow">打卡成功</p>
-          <h3>已收录瑞鹤光迹</h3>
+          <p class="eyebrow">打卡完成</p>
+          <h3 id="reward-title">已收录瑞鹤光迹</h3>
           <p id="reward-copy">银票积分 +120，两盏菊灯已为你点亮。</p>
-          <button id="reward-close-btn" class="primary-btn small" type="button">收下奖励</button>
+          <button id="reward-close-btn" class="primary-btn small" type="button">
+            收下奖励
+          </button>
         </div>
       </div>
     </div>
