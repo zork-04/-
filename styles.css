@@ -456,32 +456,40 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   background: rgba(2, 8, 13, 0.72);
   z-index: 19;
 }
 
 .identity-modal-card {
-  width: min(100%, 380px);
-  padding: 24px 18px;
+  width: min(100%, 348px);
+  max-height: min(82dvh, 680px);
+  padding: 20px 16px 16px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  row-gap: 12px;
 }
 
 .identity-modal-copy {
-  margin-top: 10px;
   color: var(--paper-soft);
   line-height: 1.6;
+  font-size: 13px;
 }
 
 .identity-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 18px 0 20px;
+  gap: 10px;
+  margin: 0;
+  padding-right: 4px;
+  overflow-y: auto;
+  align-content: start;
 }
 
 .identity-option {
-  padding: 12px;
-  border-radius: 20px;
+  padding: 10px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid transparent;
   color: var(--paper);
@@ -496,11 +504,11 @@ input:focus {
 
 .identity-option-image {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 0.84;
   object-fit: contain;
-  border-radius: 16px;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
-  padding: 10px;
+  padding: 8px;
 }
 
 .identity-option-name,
@@ -509,14 +517,14 @@ input:focus {
 }
 
 .identity-option-name {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 8px;
+  font-size: 13px;
   color: var(--paper);
 }
 
 .identity-option-code {
-  margin-top: 4px;
-  font-size: 12px;
+  margin-top: 3px;
+  font-size: 11px;
   color: var(--paper-soft);
 }
 
