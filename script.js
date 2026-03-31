@@ -135,6 +135,7 @@ const defaultState = {
   },
   ui: {
     activeMainView: "home",
+    themeMode: "dark",
   },
 };
 
@@ -152,6 +153,9 @@ const codeInput = document.getElementById("code-input");
 const sendCodeBtn = document.getElementById("send-code-btn");
 const loginBtn = document.getElementById("login-btn");
 const logoutBtn = document.getElementById("logout-btn");
+const themeToggleButtons = Array.from(
+  document.querySelectorAll("#theme-toggle-btn, #theme-toggle-btn-login")
+);
 
 const identityImage = document.getElementById("identity-image");
 const identityRank = document.getElementById("identity-rank");
@@ -230,6 +234,9 @@ function bindEvents() {
   sendCodeBtn.addEventListener("click", handleSendCode);
   loginBtn.addEventListener("click", handleLogin);
   logoutBtn.addEventListener("click", handleLogout);
+  themeToggleButtons.forEach((button) => {
+    button.addEventListener("click", toggleThemeMode);
+  });
   identityConfirmBtn.addEventListener("click", confirmIdentitySelection);
   guidePlayBtn.addEventListener("click", toggleGuidePlayback);
   openCameraBtn.addEventListener("click", openFullscreenCamera);
@@ -329,6 +336,7 @@ function saveState() {
 }
 
 function render() {
+  renderTheme();
   renderAuth();
   renderMainView();
   renderProfile();
@@ -338,6 +346,14 @@ function render() {
   renderMap(appState.mapExperience);
   renderArSummary();
   renderCamera();
+}
+
+function renderTheme() {
+  const themeMode = appState.ui.themeMode || "dark";
+  document.body.dataset.theme = themeMode;
+  themeToggleButtons.forEach((button) => {
+    button.textContent = themeMode === "light" ? "切换深色" : "切换浅色";
+  });
 }
 
 function renderAuth() {
@@ -632,14 +648,22 @@ function handleLogin() {
 }
 
 function handleLogout() {
+  const themeMode = appState.ui.themeMode || "dark";
   stopGuidePlayback();
   stopCameraStream();
   resetRecognitionState();
   appState = initializeState();
+  appState.ui.themeMode = themeMode;
   detectAvailability();
   saveState();
   render();
   showToast("已退出夜游身份");
+}
+
+function toggleThemeMode() {
+  appState.ui.themeMode = appState.ui.themeMode === "light" ? "dark" : "light";
+  saveState();
+  renderTheme();
 }
 
 function selectIdentity(id) {
